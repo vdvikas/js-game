@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		var balance=1000;
+		var guess1;
+		var guess2;
+		var guess3;
+		var hint=0;
+		var chance=0;
+
+		function randgenerator() {
+			chance=1;
+			guess1=Math.floor(Math.random()*10) ;
+			guess2=	Math.floor(Math.random()*10) ;
+			guess3=	Math.floor(Math.random()*10) ;
+			task();
+		}
+		function task() {
+			balance=balance-100;
+			if(guess1==guess2 &&  guess2==guess3){
+				balance=balance+1000;
+				hint=1;
+				uihandler();
+			}
+			else if (guess1%2==0 && guess2%2==0 && guess3%2==0) {
+				balance=balance+300;
+				hint=4;
+				uihandler();
+			}
+			else if (guess1%2==1 && guess2%2==1 && guess3%2==1) {
+				balance+=300;
+				hint=3;
+				uihandler();
+			}
+			else if(guess1==guess2 || guess2==guess3 || guess3==guess1){
+				hint=0;
+				uihandler();
+			}
+			else if((Math.abs(guess1-guess2)==1 && Math.abs(guess2-guess3)==1) || (Math.abs(guess2-guess3)==1 && Math.abs(guess3-guess1)==1) || (Math.abs(guess3-guess1)==1 && Math.abs(guess1-guess2)==1)) {
+				balance=balance+800;
+				hint=2;
+				uihandler();
+			}
+			
+			else{
+				hint=0;
+				uihandler();
+			}
+		}
+
+		function uihandler() {
+			if (chance>0) {
+			document.getElementById('p5').style.display= 'none';
+			document.getElementById('p6').style.display= 'none';
+			document.getElementById('p7').style.display= 'none';
+			}
+			document.getElementById('p4').innerHTML= "The random numbers are:";
+			document.getElementById('p1').innerHTML= guess1+" "+guess2+" "+guess3;
+			document.getElementById('p3').innerHTML= "you have "+balance+" INR.";
+			if (hint==1) {
+				document.getElementById('p2').innerHTML= "you get 1000 INR as all numbers are same.";
+				document.body.style.backgroundColor = 'cyan';
+			}
+			else if (hint==2) {
+				document.getElementById('p2').innerHTML= "you were lucky this time, you got 800 INR as all the numbers have difference 1.";
+				document.body.style.backgroundColor = 'slateblue';
+			}
+			else if (hint==3) {
+				document.getElementById('p2').innerHTML= "you were lucky this time, you got 300 INR as all the numbers are odd";
+				document.body.style.backgroundColor = 'yellow';
+			}
+			else if (hint==4) {
+				document.getElementById('p2').innerHTML= "you were lucky this time, you got 300 INR as all the numbers are even";
+				document.body.style.backgroundColor = 'yellow';
+			}
+			else{
+				document.getElementById('p2').innerHTML= "you were not lucky this time.";
+				document.body.style.backgroundColor = 'slategrey';
+			}
+			if(balance<100){
+			document.getElementById('start').disabled= true;
+			document.body.style.backgroundColor = 'RED';
+		}
+		}
+
+	</script>
+</head>
+<body>
+	<div id="one">
+		<p id="p4"></p>
+		<h1 id="p5">Random number Game</h1ss>
+	</div><br>
+	<div id="two">
+		<h4 id="p6">The rules of the game are:</h4>
+		<ul id="p7">
+			<li>User has 1000 INR when he starts the game</li>
+			<li>Every time you press start, 3 random numbers are generated, 100 INR gets deducted. </li>
+			<li>If all the numbers are odd/even (eg. 2 4 6), user gets 300 INR</li>
+			<li>If the numbers are in sequence with difference of 1 in any order (eg. 2 3 4 or 3 2 4 or 4 6 5), user gets 800 INR</li>
+			<li>If all the numbers are same, user gets 1000 INR</li>
+			<li>if INR reaches 0 , Game Over.</li>
+		</ul>
+		<p id="p1">
+		</p>
+		<br>
+		<p id="p2">
+		</p>
+	</div><br>
+	<div id="three">
+		<p id="p3">you have 1000 INR.</p>
+	</div><br>
+	<input type="button" name="start" id="start" value="start" onclick="randgenerator()">
+</body>
+</html>
